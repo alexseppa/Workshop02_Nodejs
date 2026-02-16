@@ -5,7 +5,7 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
-// MIME types for different file extensions
+
 const MIME_TYPES = {
     '.html': 'text/html',
     '.css': 'text/css',
@@ -13,14 +13,12 @@ const MIME_TYPES = {
     '.json': 'application/json'
 };
 
-// Create HTTP server
+
 const server = http.createServer((req, res) => {
     console.log(`${req.method} ${req.url}`);
 
     try {
-        // ========================================
-        // Task 6 (Bonus) - API Endpoint
-        // ========================================
+     
         if (req.url === '/api/time' && req.method === 'GET') {
             const currentDateTime = new Date().toISOString();
             res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -31,9 +29,7 @@ const server = http.createServer((req, res) => {
             return;
         }
 
-        // ========================================
-        // Task 2 - Route Mapping
-        // ========================================
+      
         let filePath;
         if (req.url === '/') {
             filePath = path.join(PUBLIC_DIR, 'index.html');
@@ -42,13 +38,11 @@ const server = http.createServer((req, res) => {
         } else if (req.url === '/contact') {
             filePath = path.join(PUBLIC_DIR, 'contact.html');
         } 
-        // ========================================
-        // Task 4 - Serve CSS Files
-        // ========================================
+        
         else if (req.url.startsWith('/styles/')) {
             filePath = path.join(PUBLIC_DIR, req.url);
 
-            // Security: Prevent path traversal attacks
+
             const normalizedPath = path.normalize(filePath);
             if (!normalizedPath.startsWith(PUBLIC_DIR)) {
                 handle404(res);
@@ -59,9 +53,7 @@ const server = http.createServer((req, res) => {
             return;
         }
 
-        // ========================================
-        // Task 3 - Serve Files
-        // ========================================
+
         const extname = path.extname(filePath);
         const contentType = MIME_TYPES[extname] || 'text/html';
 
@@ -83,9 +75,7 @@ const server = http.createServer((req, res) => {
     }
 });
 
-// ========================================
-// Task 5 - Error Handling Functions
-// ========================================
+
 function handle404(res) {
     const notFoundPath = path.join(PUBLIC_DIR, '404.html');
     fs.readFile(notFoundPath, (err, content) => {
@@ -113,9 +103,7 @@ function handleServerError(res, error) {
     });
 }
 
-// ========================================
-// Task 1 - Start the Server
-// ========================================
+
 server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     console.log('Available routes:');
